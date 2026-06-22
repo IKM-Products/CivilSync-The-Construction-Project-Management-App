@@ -78,5 +78,7 @@ The objective of **CivilSync** is to provide a centralized platform for managing
 
 📧 Contact
 For questions or feedback, please open an issue on GitHub.
+
 -----
+
 ⭐ If you found this project helpful, please consider giving it a star!
