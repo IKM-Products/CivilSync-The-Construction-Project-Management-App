@@ -76,7 +76,7 @@ The objective of **CivilSync** is to provide a centralized platform for managing
 * 📑 Auto-generated project reports
 * 🏢 Multi-project management support
 
-📧 Contact
+## 📧 Contact
 For questions or feedback, please open an issue on GitHub.
 
 -----
