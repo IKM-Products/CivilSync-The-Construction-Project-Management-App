@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Loader2, Lock, Mail, User } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
+import { signUp } from "@/lib/auth-client";
 import { registerSchema, type RegisterSchema } from "@/schemas/auth.schema";
 
 import { Button } from "@/components/ui/button";
@@ -18,9 +20,12 @@ import {
 import { Input } from "@/components/ui/input";
 
 export function RegisterForm() {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
@@ -33,9 +38,22 @@ export function RegisterForm() {
   });
 
   async function onSubmit(values: RegisterSchema) {
-    console.log(values);
+    const { error } = await signUp.email({
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    });
 
-    // TODO: connect Better Auth register here
+    if (error) {
+      setError("root", {
+        message: error.message || "Failed to create account.",
+      });
+
+      return;
+    }
+
+    router.push("/dashboard");
+    router.refresh();
   }
 
   return (
@@ -50,6 +68,12 @@ export function RegisterForm() {
 
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          {errors.root && (
+            <p className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+              {errors.root.message}
+            </p>
+          )}
+
           <div className="space-y-2">
             <label htmlFor="name" className="text-sm font-medium">
               Full Name
